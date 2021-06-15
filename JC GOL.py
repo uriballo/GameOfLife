@@ -15,18 +15,19 @@ screen.fill(background)
 cX, cY = 50, 50
 
 # Cells dimensions.
-dimCW = scWidth / cX
-dimCH = scHeight / cY
+dimCW = scWidth / cX # Width
+dimCH = scHeight / cY # Height
 
-# Current state of the game.
+# Starting state (all cells are dead)
 state = np.zeros((cX, cY))
 
 pauseGame = True
 
 while True:
-
+    # Copy of the previous state
     newState = np.copy(state)
 
+    # Control of mouse/keyboard events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -42,8 +43,9 @@ while True:
 
     screen.fill(background)
 
-    for y in range(0, cX):
-        for x in range(0, cY):
+    # Iterate through the game state matrix.
+    for x in range(0, cX):
+        for y in range(0, cY):
             if not pauseGame:
                 # Number of neighbours.
                 nNeigh = state[(x - 1) % cX, (y - 1) % cY] + \
@@ -55,11 +57,11 @@ while True:
                          state[(x)     % cX, (y + 1) % cY] + \
                          state[(x + 1) % cX, (y + 1) % cY]
 
-                # RULE 1
+                # RULE 1. If a cell is dead and has 3 neighbours becomes alive.
                 if state[x, y] == 0 and nNeigh == 3:
                     newState[x, y] = 1
 
-                # RULE 2
+                # RULE 2. If a cell is alive and has less than 2 neighbours dies from isolation or if it has more than 3 dies from overpopulation.
                 elif state[x, y] == 1 and (nNeigh < 2 or nNeigh > 3):
                     newState[x, y] = 0
 
@@ -69,14 +71,15 @@ while True:
                         ((x + 1) * dimCW, (y + 1) * dimCW),
                         ((x) * dimCW, (y + 1) * dimCH)]
 
+            # Painting the cell "dead".
             if newState[x, y] == 0:
                 pygame.draw.polygon(screen, (128, 128, 128), cellXY, 1)
-
+            # Painting the cell "alive".
             else:
                 pygame.draw.polygon(screen, (255, 255, 255), cellXY, 0)
 
+    # Updating the current state.
     state = np.copy(newState)
 
     time.sleep(0.05)
-
     pygame.display.flip()
