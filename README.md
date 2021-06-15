@@ -4,5 +4,5 @@ The Game of Life is a cellular automaton devised by the British mathematician Jo
 
 In this implementation you can create a initial configuration using left and right click to turn a cell alive or dead respectively and space to pause the evolution.
 
-<img src="https://media.giphy.com/media/L8dpNIK58u0m8lT4GB/source.gif" alt="Alt text" style="zoom:50%;" />
+<img src="https://media.giphy.com/media/L8dpNIK58u0m8lT4GB/source.gif" alt=""/>
 
